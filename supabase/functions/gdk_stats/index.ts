@@ -11,8 +11,8 @@ import {
 } from "../_shared/common.ts";
 import { GdkError, ErrorTypes } from "../_shared/errors.ts";
 
-const ENV_VARS = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "PUMPS_URL"];
-const [SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, PUMPS_URL] =
+const ENV_VARS = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
+const [SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY] =
 	loadEnvVars(ENV_VARS);
 
 const supabaseServiceRoleClient = createClient(
@@ -104,15 +104,6 @@ const getWateringsCount = async (): Promise<number> => {
 	return count || 0;
 };
 
-const getPumpsCount = async (): Promise<number> => {
-	const response = await fetch(PUMPS_URL);
-	if (response.status !== 200) {
-		throw new GdkError(response.statusText, ErrorTypes.GdkStatsPump);
-	}
-	const geojson = await response.json();
-	return geojson.features.length;
-};
-
 const getAdoptedTreesCount = async (): Promise<TreeAdoptions> => {
 	const { data, error } = await supabaseServiceRoleClient
 		.rpc("calculate_adoptions")
@@ -192,7 +183,6 @@ const handler = async (request: Request): Promise<Response> => {
 			usersCount,
 			wateringsCount,
 			treeAdoptions,
-			numPumps,
 			monthlyWaterings,
 			waterings,
 			monthlyWeather,
@@ -203,7 +193,6 @@ const handler = async (request: Request): Promise<Response> => {
 			getUserProfilesCount(),
 			getWateringsCount(),
 			getAdoptedTreesCount(),
-			getPumpsCount(),
 			getMonthlyWaterings(),
 			getWaterings(),
 			getMonthlyWeather(),
@@ -214,7 +203,6 @@ const handler = async (request: Request): Promise<Response> => {
 
 		const stats: GdkStats = {
 			numTrees: treeCount,
-			numPumps: numPumps,
 			numActiveUsers: usersCount,
 			numWateringsThisYear: wateringsCount,
 			monthlyWaterings: monthlyWaterings,

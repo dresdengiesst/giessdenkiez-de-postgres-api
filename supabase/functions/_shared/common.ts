@@ -25,7 +25,6 @@ export interface TreeAdoptions {
 
 export interface GdkStats {
 	numTrees: number;
-	numPumps: number;
 	numActiveUsers: number;
 	numWateringsThisYear: number;
 	monthlyWaterings: Monthly[];

@@ -1,5 +1,4 @@
 export enum ErrorTypes {
-	GdkStatsPump = "gdk_stats_pumps",
 	GdkStatsUser = "gdk_stats_users",
 	GdkStatsWatering = "gdk_stats_waterings",
 	GdkStatsAdoption = "gdk_stats_adoptions",
